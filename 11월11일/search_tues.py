@@ -5,7 +5,12 @@
 # ===============================================================
 import random, time
 import matplotlib.pyplot as plt
+import numpy as np
+
 plt.rcParams["font.family"] = "Malgun Gothic"   # 한글 폰트 지정
+
+# 랜덤 시드 고정
+random.seed(42)
 
 # 1. 순차 탐색 (Sequential Search) : O(n)
 def linear_search(arr, key, low=0, high=None): 
@@ -53,7 +58,11 @@ def interpolation_search(arr, key, low=0, high=None):
     if high is None:
         high = len(arr) - 1          # high 기본값 처리
     count = 0                        # 비교 연산 횟수 카운트
-    left, right = low, high          # 탐색 구간 초기화
+    left, right = low, high
+    while left <= right and arr[left] <= key <= arr[right]:
+        count += 1
+        if arr[right] == arr[left]:
+            break
     mid = (left + right) // 2        # 중앙 인덱스 계산
    
     if arr[mid] == key:              # 찾은 경우
@@ -93,7 +102,6 @@ print(f"이진 탐색 : 평균 {binary_c:.2f}회 비교, 평균시간 {binary_t*
 print(f"보간 탐색 : 평균 {interp_c:.2f}회 비교, 평균시간 {interp_t*1e6:.2f} μs")
 
 # 6. 시각화 (비교 횟수 및 실행 시간)
-import numpy as np
 labels = ["순차 탐색", "이동 평균 탐색", "이진 탐색", "보간 탐색"]
 compare_counts = [linear_c, sequential_c, binary_c, interp_c]
 times = [linear_t*1e6, sequential_t*1e6, binary_t*1e6, interp_t*1e6] 
